@@ -3,7 +3,7 @@ import {SearchPanel} from "./search-panel";
 import {List} from "./list";
 import {useEffect, useState} from "react";
 import qs from 'qs'
-import {cleanObject} from "../utils/index"
+import {cleanObject, useDeBounce} from "../utils/index"
 const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectLists = () => {
     const [users, setUsers] = useState([])
@@ -21,7 +21,7 @@ export const ProjectLists = () => {
                 setLists(data)
             }
         })
-    }, [param])
+    }, [useDeBounce(param)])
 
     useEffect(() => {
         fetch(`${apiUrl}/users`).then(async res => {

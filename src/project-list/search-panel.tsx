@@ -1,6 +1,7 @@
 import React from "react"
+import {SearchPanelTypes} from "../types/user"
 
-export const SearchPanel = ({param, setParam, users}) => {
+export const SearchPanel = ({param, setParam, users}: SearchPanelTypes) => {
     return <form action="">
         <div>
             <input type="text" value={param.name} onChange={e => {
@@ -12,7 +13,7 @@ export const SearchPanel = ({param, setParam, users}) => {
                 <option key={0} value={''}>负责人</option>
                 {
                     users.map(user => {
-                        return <option key={user.id}  value={user.id}>
+                        return <option key={user.id} value={user.id}>
                             {user.name}
                         </option>
                     })
