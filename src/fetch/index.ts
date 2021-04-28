@@ -24,3 +24,13 @@ export function login(params: any){
         body: JSON.stringify(params)
     })
 }
+
+export function register(params: any){
+    return request('register',{
+        method: 'post',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(params)
+    })
+}
