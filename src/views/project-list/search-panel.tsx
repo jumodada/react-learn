@@ -1,5 +1,5 @@
 import React from "react"
-import {SearchPanelTypes} from "../types/user"
+import {SearchPanelTypes} from "../../types/user"
 
 export const SearchPanel = ({param, setParam, users}: SearchPanelTypes) => {
     return <form action="">

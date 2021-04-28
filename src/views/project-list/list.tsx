@@ -1,5 +1,5 @@
 import React from "react"
-import {Lists} from "../types/user"
+import {Lists} from "../../types/user"
 
 export const List = ({lists, users}: Lists) => {
     return <table>
