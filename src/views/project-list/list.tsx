@@ -1,23 +1,40 @@
-import React from "react"
-import {Lists} from "../../types/user"
+import React from "react";
+import { User } from "./search-panel";
 
-export const List = ({lists, users}: Lists) => {
-    return <table>
-        <thead>
-        <tr>
-            <th>名称</th>
-            <th>负责人</th>
-        </tr>
-        </thead>
-        <tbody>
-        {
-            lists.map(list => <tr key={list.id}>
-                <td>{list.name}</td>
-                <td>
-                    {users.find(user => user.id === list.personId)?.name}
-                </td>
-            </tr>)
-        }
-        </tbody>
-    </table>
+interface Project {
+  id: string;
+  name: string;
+  personId: string;
+  pin: boolean;
+  organization: string;
 }
+
+interface ListProps {
+  list: Project[];
+  users: User[];
+}
+
+export const List = ({ list, users }: ListProps) => {
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>名称</th>
+          <th>负责人</th>
+        </tr>
+      </thead>
+      <tbody>
+        {list.map((project) => (
+          <tr key={project.id}>
+            <td>{project.name}</td>
+            {/*undefined.name*/}
+            <td>
+              {users.find((user) => user.id === project.personId)?.name ||
+                "未知"}
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};

@@ -1,36 +1,47 @@
-import {login, register} from "./fetch";
+import { User } from "./views/project-list/search-panel";
 
-const localStorageKey = '__auth_provider_token__'
+const apiUrl = process.env.REACT_APP_API_URL;
 
+const localStorageKey = "__auth_provider_token__";
 
-export default function () {
-    window.localStorage.getItem(localStorageKey)
-}
+export const getToken = () => window.localStorage.getItem(localStorageKey);
 
-export function handlerUserResponse({user}: any) {
-    window.localStorage.setItem(localStorageKey, user.token || '')
-}
+export const handleUserResponse = ({ user }: { user: User }) => {
+  window.localStorage.setItem(localStorageKey, user.token || "");
+  return user;
+};
 
-export  function Login({username, password}: any){
-    return   login({username, password}).then(async res=>{
-       if(res.ok){
-           return handlerUserResponse(await res.json())
-       }
-    })
-}
+export const login = (data: { username: string; password: string }) => {
+  return fetch(`${apiUrl}/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then(async (response) => {
+    if (response.ok) {
+      return handleUserResponse(await response.json());
+    } else {
+      return Promise.reject(data);
+    }
+  });
+};
 
-export  function Register({username, password}: any){
-    return   register({username, password}).then(async res=>{
-        if(res.ok){
-            return handlerUserResponse(await res.json())
-        }else{
-             return Promise.reject()
-        }
-    })
-}
+export const register = (data: { username: string; password: string }) => {
+  return fetch(`${apiUrl}/register`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then(async (response) => {
+    if (response.ok) {
+      return handleUserResponse(await response.json());
+    } else {
+      return Promise.reject(data);
+    }
+  });
+};
 
-
-export  function Logout(){
-    window.localStorage.removeItem(localStorageKey)
-    return Promise.resolve()
-}
+export const logout = async () =>
+  window.localStorage.removeItem(localStorageKey);

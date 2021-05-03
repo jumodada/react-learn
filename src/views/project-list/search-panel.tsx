@@ -1,24 +1,55 @@
-import React from "react"
-import {SearchPanelTypes} from "../../types/user"
+import React from "react";
+import { useEffect, useState } from "react";
 
-export const SearchPanel = ({param, setParam, users}: SearchPanelTypes) => {
-    return <form action="">
-        <div>
-            <input type="text" value={param.name} onChange={e => {
-                setParam({...param, name: e.target.value})
-            }}/>
-            <select name="" id="" value={param.personId} onChange={e => {
-                setParam({...param, personId: e.target.value})
-            }}>
-                <option key={0} value={''}>负责人</option>
-                {
-                    users.map(user => {
-                        return <option key={user.id} value={user.id}>
-                            {user.name}
-                        </option>
-                    })
-                }
-            </select>
-        </div>
-    </form>
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  title: string;
+  organization: string;
+  token: string;
 }
+
+interface SearchPanelProps {
+  users: User[];
+  param: {
+    name: string;
+    personId: string;
+  };
+  setParam: (param: SearchPanelProps["param"]) => void;
+}
+
+export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
+  return (
+    <form>
+      <div>
+        <input
+          type="text"
+          value={param.name}
+          onChange={(evt) =>
+            setParam({
+              ...param,
+              name: evt.target.value,
+            })
+          }
+        />
+        <select
+          value={param.personId}
+          onChange={(evt) =>
+            setParam({
+              ...param,
+              personId: evt.target.value,
+            })
+          }
+        >
+          <option value={""}>负责人</option>
+          {users.map((user) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
+      </div>
+    </form>
+  );
+};
