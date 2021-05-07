@@ -4,7 +4,7 @@ import {useAuth} from "../context/auth-context";
 
 const root = process.env.REACT_APP_API_URL
 
-export const request = async (url: string, {data, token, headers, ...customConfig}: any) => {
+export const request = async (url: string, {data, token, headers, ...customConfig}: any = {}) => {
     const config = {
         method: 'GET',
         headers: {
@@ -13,13 +13,12 @@ export const request = async (url: string, {data, token, headers, ...customConfi
         },
         ...customConfig
     }
-
     if (config.method.toLowerCase() === 'get') {
-        url += Object.keys(data).length > 0 ? `?${qs.stringify(data)}` : ''
+        url += data ? (`?${qs.stringify(data)}`) : ''
+
     } else {
-        config.body = data ?JSON.stringify(data): '{}'
+        config.body = JSON.stringify(data || {})
     }
-   console.log(url)
     return window.fetch(`${root}/${url}`, config).then(async res => {
         if (res.status === 401) {
             await logout()
@@ -38,8 +37,5 @@ export const request = async (url: string, {data, token, headers, ...customConfi
 
 export function useRequest() {
     const {user} = useAuth()
-    console.log(user)
-    return (...[url, config]: Parameters<typeof request>) => request(url, {...config, token: user.token})
-
-
+    return (...[url, config]  : Parameters<typeof request>) => request(url, {...config, token: user.token})
 }
