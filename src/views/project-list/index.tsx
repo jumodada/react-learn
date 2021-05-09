@@ -4,6 +4,7 @@ import {List} from "./list";
 import {useEffect, useState} from "react";
 import {cleanObject, useDebounce, useMount} from "../../utils";
 import { useRequest} from "../../fetch";
+import styled from "@emotion/styled";
 
 export const ProjectListScreen = () => {
     const [users, setUsers] = useState([]);
@@ -22,16 +23,18 @@ export const ProjectListScreen = () => {
     }, [debouncedParam]);
 
     useMount(() => {
-
         client('users').then(res => {
             setUsers(() => res)
         })
     });
 
     return (
-        <div>
+        <Wrapper>
             <SearchPanel users={users} param={param} setParam={setParam}/>
             <List users={users} list={list}/>
-        </div>
+        </Wrapper>
     );
-};
+}
+
+const Wrapper = styled.div`
+`
