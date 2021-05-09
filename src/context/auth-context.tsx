@@ -20,9 +20,7 @@ export const AuthProvider = ({children}: any) => {
     const [user, setUser] = useState<any>(null);
     const [isRegister, setIsRegister] = useState(false);
     const login = (form: any) => auth.LoginOrRegister(form).then(setUser);
-    const register = (form: any) => auth.LoginOrRegister(form, 'register').then(setUser).catch(err=>{
-        console.log(err)
-    })
+    const register = (form: any) => auth.LoginOrRegister(form, 'register').then(setUser)
     const logout = () => auth.logout().then(() => setUser(null));
 
     useMount(() => {

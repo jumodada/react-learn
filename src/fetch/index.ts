@@ -30,10 +30,10 @@ export const request = async (url: string, {data, token, headers, method = 'GET'
         if (res.ok) {
             return data
         } else {
-            return Promise.reject(data)
+            message.error(data.message || '请求失败');
+            return false
         }
     }).catch(err=>{
-        console.log(err)
         message.error(err.message || '请求失败');
     })
 }
