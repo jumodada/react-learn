@@ -37,5 +37,5 @@ export const request = async (url: string, {data, token, headers, ...customConfi
 
 export function useRequest() {
     const {user} = useAuth()
-    return (...[url, config]  : Parameters<typeof request>) => request(url, {...config, token: user.token})
+    return (...[url, config]: Parameters<typeof request>) => request(url, {...config, token: user.token})
 }
