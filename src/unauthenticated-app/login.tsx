@@ -1,11 +1,11 @@
-import React, {FormEvent} from "react";
+import React from "react";
 import {useAuth} from "../context/auth-context";
 import {Button, Form, Input} from "antd";
 import styled from "@emotion/styled";
 
 
 export const Login = () => {
-    const {login} = useAuth();
+    const {login, setLoginStatus} = useAuth();
 
     const handleSubmit = ({username, password}: any) => {
 
@@ -22,7 +22,14 @@ export const Login = () => {
             </Form.Item>
             <Form.Item>
                 <Button htmlType={'submit'} type={"primary"}>登录</Button>
+                <RightButton type="dashed"  onClick={() => setLoginStatus()}>
+                    切换到注册
+                </RightButton>
             </Form.Item>
         </Form>
     );
 };
+
+const RightButton = styled(Button)`
+ margin-left: 10px;
+`

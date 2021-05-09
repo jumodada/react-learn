@@ -18,41 +18,26 @@ const bootstrapUser = async () => {
 
 export const AuthProvider = ({children}: any) => {
     const [user, setUser] = useState<any>(null);
-
-    const login = (form: any) => auth.login(form).then(setUser);
-    const register = (form: any) => auth.register(form).then(setUser);
+    const [isRegister, setIsRegister] = useState(false);
+    const login = (form: any) => auth.LoginOrRegister(form).then(setUser);
+    const register = (form: any) => auth.LoginOrRegister(form, 'register').then(setUser).catch(err=>{
+        console.log(err)
+    })
     const logout = () => auth.logout().then(() => setUser(null));
 
     useMount(() => {
         bootstrapUser().then(setUser)
     })
+    const setLoginStatus = () => setIsRegister(!isRegister)
     return (
         <AuthContext.Provider
             children={children}
-            value={{user, login, register, logout}}
+            value={{user, login, register, logout, isRegister, setLoginStatus}}
         />
     );
 };
 
-export const Test = ({children}: any) => {
-    const [user, setUser] = useState<any>({
-        token: 'fuck'
-    });
 
-    const login = (form: any) => auth.login(form).then(setUser);
-    const register = (form: any) => auth.register(form).then(setUser);
-    const logout = () => auth.logout().then(() => setUser(null));
-
-    useMount(() => {
-
-    })
-    return (
-        <AuthContext.Provider
-            children={children}
-            value={{user, login, register, logout}}
-        />
-    );
-};
 
 export const useAuth = () => {
     const context = React.useContext(AuthContext);
@@ -60,4 +45,4 @@ export const useAuth = () => {
         throw new Error("hooks error");
     }
     return context;
-};
+}

@@ -1,12 +1,13 @@
 import qs from "qs";
 import {logout} from "../auth-provider";
 import {useAuth} from "../context/auth-context";
+import {message} from "antd"
 
 const root = process.env.REACT_APP_API_URL
 
-export const request = async (url: string, {data, token, headers, ...customConfig}: any = {}) => {
+export const request = async (url: string, {data, token, headers, method = 'GET', ...customConfig}: any = {}) => {
     const config = {
-        method: 'GET',
+        method,
         headers: {
             Authorization: token ? `Bearer ${token}` : '',
             'Content-Type': data ? 'application/json' : ''
@@ -31,6 +32,9 @@ export const request = async (url: string, {data, token, headers, ...customConfi
         } else {
             return Promise.reject(data)
         }
+    }).catch(err=>{
+        console.log(err)
+        message.error(err.message || '请求失败');
     })
 }
 
