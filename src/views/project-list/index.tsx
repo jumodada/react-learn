@@ -3,7 +3,7 @@ import {SearchPanel} from "./search-panel";
 import {List} from "./list";
 import {useEffect, useState} from "react";
 import {cleanObject, useDebounce, useMount} from "../../utils";
-import { useRequest} from "../../fetch";
+import {useRequest} from "../../fetch";
 import styled from "@emotion/styled";
 
 export const ProjectListScreen = () => {
@@ -30,6 +30,7 @@ export const ProjectListScreen = () => {
 
     return (
         <Wrapper>
+            <h1>项目经验</h1>
             <SearchPanel users={users} param={param} setParam={setParam}/>
             <List users={users} list={list}/>
         </Wrapper>
@@ -37,4 +38,5 @@ export const ProjectListScreen = () => {
 }
 
 const Wrapper = styled.div`
+  padding: 2rem;
 `
