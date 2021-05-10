@@ -20,7 +20,7 @@ export const RegisterScreen = () => {
             <Input type="password" id={"password"} />
         </Form.Item>
         <Form.Item >
-            <Button htmlType={'submit'} type={"primary"}>注册</Button>
+            <LongButton htmlType={'submit'} type={"primary"}>注册</LongButton>
         </Form.Item>
         <RegisterDivider>
             <div onClick={() => setLoginStatus(false)}>
@@ -30,6 +30,12 @@ export const RegisterScreen = () => {
     </Form>
   );
 };
+
+
+const LongButton = styled(Button)`
+  width: 100%;
+`
+
 const RegisterDivider = styled(Divider)`
   span {
     color: #878686;

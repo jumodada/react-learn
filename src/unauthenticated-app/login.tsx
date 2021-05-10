@@ -21,7 +21,7 @@ export const Login = () => {
                 <Input type="password" id={"password"}/>
             </Form.Item>
             <Form.Item>
-                <Button htmlType={'submit'} type={"primary"}>登录</Button>
+                <LongButton htmlType={'submit'} type={"primary"}>登录</LongButton>
                 <RegisterDivider>
                     <div onClick={() => setLoginStatus(false)}>
                         没有账号? 注册新账号
@@ -31,6 +31,10 @@ export const Login = () => {
         </Form>
     );
 };
+
+const LongButton = styled(Button)`
+  width: 100%;
+`
 
 const RegisterDivider = styled(Divider)`
   span {

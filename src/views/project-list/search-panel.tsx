@@ -1,60 +1,59 @@
 import React from "react";
-import { useEffect, useState } from "react";
-import {Col, Input, Row, Select} from "antd";
+import {useEffect, useState} from "react";
+import {Col, Form, Input, Row, Select} from "antd";
 
 export interface User {
-  id: string;
-  name: string;
-  email: string;
-  title: string;
-  organization: string;
-  token: string;
+    id: string;
+    name: string;
+    email: string;
+    title: string;
+    organization: string;
+    token: string;
 }
 
 interface SearchPanelProps {
-  users: User[];
-  param: {
-    name: string;
-    personId: string;
-  };
-  setParam: (param: SearchPanelProps["param"]) => void;
+    users: User[];
+    param: {
+        name: string;
+        personId: string;
+    };
+    setParam: (param: SearchPanelProps["param"]) => void;
 }
 
-export const SearchPanel = ({ users, param, setParam }: SearchPanelProps) => {
-  return (
-    <form>
-      <Row>
-          <Col span={18}>
-              <Input
-                  type="text"
-                  value={param.name}
-                  onChange={(evt) =>
-                      setParam({
-                          ...param,
-                          name: evt.target.value,
-                      })
-                  }
-              />
-          </Col>
-        <Col span={6}>
-            <Select
-                value={param.personId}
-                onChange={value =>
-                    setParam({
-                        ...param,
-                        personId: value
-                    })
-                }
-            >
-                <Select.Option key={0} value={""}>负责人</Select.Option>
-                {users.map((user) => (
-                    <Select.Option key={user.id} value={user.id}>
-                        {user.name}
-                    </Select.Option>
-                ))}
-            </Select>
-        </Col>
-      </Row>
-    </form>
-  );
+export const SearchPanel = ({users, param, setParam}: SearchPanelProps) => {
+    return (
+        <Form layout={'inline'}>
+            <Form.Item>
+                <Input
+                    type="text"
+                    value={param.name}
+                    onChange={(evt) =>
+                        setParam({
+                            ...param,
+                            name: evt.target.value,
+                        })
+                    }
+                />
+            </Form.Item>
+            <Form.Item>
+                <Select
+                    value={param.personId}
+                    onChange={value =>
+                        setParam({
+                            ...param,
+                            personId: value
+                        })
+                    }
+                >
+                    <Select.Option key={0} value={""}>负责人</Select.Option>
+                    {users.map((user) => (
+                        <Select.Option key={user.id} value={user.id}>
+                            {user.name}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </Form.Item>
+         
+        </Form>
+    );
 };
