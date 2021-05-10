@@ -12,13 +12,25 @@ export const UnauthenticatedApp = () => {
     const {isRegister} = useAuth()
     return (
         <Container>
-            <Header />
+            <Header/>
+            <BackGround />
             <CardWrapper>
                 {isRegister ? <RegisterScreen/> : <Login/>}
             </CardWrapper>
         </Container>
     );
 };
+
+const BackGround = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: calc(((100vw - 40rem) / 2) - 3.2rem), calc(((100vw - 40rem) / 2) - 3.2rem), cover;
+  background-position: left bottom, right bottom;
+  background-image: url(${Left}), url(${Right});
+`
 
 const CardWrapper = styled(Card)`
   width: 30rem;
@@ -39,4 +51,6 @@ const Header = styled.header`
   background-size: 8rem;
   width: 100%;
   height: 100px;
+  position: absolute;
+  top: calc(50% - 30rem);
 `

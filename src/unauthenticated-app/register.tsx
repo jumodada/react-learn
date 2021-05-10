@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../context/auth-context";
-import {Button, Form, Input} from "antd";
+import {Button, Divider, Form, Input} from "antd";
 import styled from "@emotion/styled";
 
 
@@ -21,13 +21,19 @@ export const RegisterScreen = () => {
         </Form.Item>
         <Form.Item >
             <Button htmlType={'submit'} type={"primary"}>注册</Button>
-            <RightButton type={'dashed'} onClick={() => setLoginStatus(false)}>
-                切换到登录
-            </RightButton>
         </Form.Item>
+        <RegisterDivider>
+            <div onClick={() => setLoginStatus(false)}>
+                已有账号，请登录
+            </div>
+        </RegisterDivider>
     </Form>
   );
 };
-const RightButton = styled(Button)`
- margin-left: 10px;
+const RegisterDivider = styled(Divider)`
+  span {
+    color: #878686;
+    cursor: pointer;
+    font-size: 14px;
+  }
 `

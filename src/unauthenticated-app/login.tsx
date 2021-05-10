@@ -1,6 +1,6 @@
 import React from "react";
 import {useAuth} from "../context/auth-context";
-import {Button, Form, Input} from "antd";
+import {Button, Divider, Form, Input} from "antd";
 import styled from "@emotion/styled";
 
 
@@ -22,14 +22,20 @@ export const Login = () => {
             </Form.Item>
             <Form.Item>
                 <Button htmlType={'submit'} type={"primary"}>登录</Button>
-                <RightButton type="dashed"  onClick={() => setLoginStatus()}>
-                    切换到注册
-                </RightButton>
+                <RegisterDivider>
+                    <div onClick={() => setLoginStatus(false)}>
+                        没有账号? 注册新账号
+                    </div>
+                </RegisterDivider>
             </Form.Item>
         </Form>
     );
 };
 
-const RightButton = styled(Button)`
- margin-left: 10px;
+const RegisterDivider = styled(Divider)`
+  span {
+    color: #878686;
+    cursor: pointer;
+    font-size: 14px;
+  }
 `
