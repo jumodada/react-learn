@@ -15,9 +15,10 @@ interface Project {
 interface ListProps {
     list: Project[];
     users: User[];
+    loading: boolean
 }
 
-export const List = ({list, users}: ListProps) => {
+export const List = ({list, ...props}: ListProps) => {
 
     return (
         <Table columns={[
@@ -28,8 +29,7 @@ export const List = ({list, users}: ListProps) => {
             },
             {
                 title: '负责人', render(project: any) {
-                    console.log(users)
-                    return users.find((user) => user.id === project.personId)?.name || "未知"
+                    return props.users.find((user) => user.id === project.personId)?.name || "未知"
                 }
             },
             {
@@ -40,7 +40,7 @@ export const List = ({list, users}: ListProps) => {
                     </span>
                 }
             }
-        ]} pagination={false} dataSource={list}>
+        ]} {...props} pagination={false} dataSource={list}>
 
         </Table>
     );

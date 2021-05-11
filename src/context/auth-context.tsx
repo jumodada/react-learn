@@ -36,7 +36,6 @@ export const AuthProvider = ({children}: any) => {
 };
 
 
-
 export const useAuth = () => {
     const context = React.useContext(AuthContext);
     if (!context) {
@@ -44,3 +43,5 @@ export const useAuth = () => {
     }
     return context;
 }
+
+
