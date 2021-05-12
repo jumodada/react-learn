@@ -40,7 +40,7 @@ export const List = ({list, ...props}: ListProps) => {
                     </span>
                 }
             }
-        ]} {...props} pagination={false} dataSource={list}>
+        ]} {...props} pagination={false} dataSource={list} rowKey={record=> record.id}>
 
         </Table>
     );

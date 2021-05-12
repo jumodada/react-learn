@@ -1,5 +1,5 @@
 import styled from "@emotion/styled"
-import {Spin} from "antd";
+import {Spin, Typography} from "antd";
 
 export const Row = styled.div<any>`
   display: flex;
@@ -28,3 +28,22 @@ export const FullScreenLoading = () => <FullScreen>
 
     </Spin>
 </FullScreen>
+
+
+
+export const FullPageErrorFallback = ({ error }: { error: Error | null }) => (
+    <FullScreen>
+        <ErrorBox error={error} />
+    </FullScreen>
+);
+
+const isError = (value: any): value is Error => value?.message;
+export const ErrorBox = ({ error }: { error: unknown }) => {
+    if (isError(error)) {
+        return <div>
+            123
+            <Typography.Text type={"danger"}>{error?.message}</Typography.Text>;
+        </div>
+    }
+    return null;
+};
