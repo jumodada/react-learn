@@ -11,6 +11,7 @@ const bootstrapUser = async () => {
     const token = auth.getToken()
     if (token) {
         const data = await request('me', {token})
+        if(!data) return
         user = data.user
     }
     return user
@@ -21,7 +22,7 @@ export const AuthProvider = ({children}: any) => {
     const [isRegister, setIsRegister] = useState(false);
     const login = (form: any) => auth.LoginOrRegister(form).then(setUser);
     const register = (form: any) => auth.LoginOrRegister(form, 'register').then(setUser)
-    const logout = () => auth.logout().then(() => setUser(null));
+    const logout = () => auth.logout().then(() => setUser(null))
 
     useMount(() => {
         bootstrapUser().then(setUser)

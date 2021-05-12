@@ -1,6 +1,5 @@
 import React from "react"
-import {RegisterScreen} from "./register"
-import {Login} from "./login"
+import {useLogin} from "./useLogin"
 import {Card} from "antd"
 import styled from "@emotion/styled"
 import {useAuth} from "../context/auth-context"
@@ -10,12 +9,13 @@ import Left from '../assets/left.svg'
 
 export const UnauthenticatedApp = () => {
     const {isRegister} = useAuth()
+    const Login = useLogin(isRegister)
     return (
         <Container>
             <Header/>
             <BackGround />
             <CardWrapper>
-                {isRegister ? <RegisterScreen/> : <Login/>}
+                <Login />
             </CardWrapper>
         </Container>
     );
