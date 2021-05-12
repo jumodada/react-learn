@@ -16,7 +16,11 @@ export const useAsync = (initialState?: any) => {
         stat: 'success',
         error: null
     })
-
+    const setError = (error: any) => setState({
+        ...state,
+        stat: 'error',
+        error
+    })
     const run = (promise: any)=>{
         if(!promise || !promise.then) {
             throw new Error('不是promise')
@@ -26,6 +30,7 @@ export const useAsync = (initialState?: any) => {
             setData(data)
             return data
         }).catch((err: any)=>{
+            setError(err)
             return err
         })
     }
