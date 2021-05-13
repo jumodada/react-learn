@@ -6,10 +6,11 @@ import {useAuth} from "../context/auth-context"
 import Logo from '../assets/logo.svg'
 import Right from '../assets/right.svg'
 import Left from '../assets/left.svg'
-
+import {useDocumentTitle} from "../utils";
 export const UnauthenticatedApp = () => {
     const {isRegister} = useAuth()
     const Login = useLogin(isRegister)
+    useDocumentTitle('XX系统', false)
     return (
         <Container>
             <Header/>
