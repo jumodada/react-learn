@@ -10,7 +10,6 @@ import {FullPageErrorFallback} from "./components/lib";
 
 function App() {
     const {user} = useAuth();
-
     return (
         <Wrapper className="App">
             <ErrorBoundary fallbackRender={FullPageErrorFallback}>

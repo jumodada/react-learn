@@ -9,7 +9,7 @@ import Left from '../assets/left.svg'
 import {useDocumentTitle} from "../utils";
 export const UnauthenticatedApp = () => {
     const {isRegister} = useAuth()
-    const Login = useLogin(isRegister)
+    const Login = useLogin(!isRegister)
     useDocumentTitle('XX系统', false)
     return (
         <Container>

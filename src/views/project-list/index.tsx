@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import {SearchPanel} from "./search-panel";
 import {List} from "./list";
-import { useState} from "react";
+import {useState} from "react";
 import {useDebounce, useDocumentTitle} from "../../utils";
 import styled from "@emotion/styled"
 import {useProjects} from "./project";
@@ -14,9 +14,11 @@ export const ProjectListScreen = () => {
     });
 
     const debouncedParam = useDebounce(param, 200);
-    const {isLoading,data: list, users} = useProjects(debouncedParam)
+    const {isLoading, data: list, users} = useProjects(debouncedParam)
 
     useDocumentTitle('项目列表', false)
+
+
     return (
         <Wrapper>
             <h1>项目经验</h1>
