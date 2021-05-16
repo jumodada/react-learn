@@ -5,36 +5,52 @@ import {Button, Dropdown, Menu} from "antd";
 import styled from "@emotion/styled"
 import {Row} from "./components/lib"
 import {ReactComponent as Logo} from './assets/software-logo.svg'
-
+import {Navigate, Route, Routes} from "react-router"
+import {BrowserRouter as Router} from "react-router-dom"
+import {ProjectScreen} from "./views/project-screen"
+import {resetRoute} from "./utils"
 
 export const AuthenticatedApp = () => {
-    const {logout, user} = useAuth();
+
     return (
         <Wrapper>
-            <Header padding={2} between={true}>
-                <HeaderLeft gap={true}>
-                    <Logo width={'15rem'}/>
-                    <h3>项目</h3>
-                    <h3>用户</h3>
-                </HeaderLeft>
-                <HeaderRight>
-                    <Dropdown overlay={<Menu>
-                        <Menu.Item key={'logout'}>
-                            <Button type={'link'} onClick={logout}>登出</Button>
-                        </Menu.Item>
-                    </Menu>}>
-                        <div onClick={e=>e.preventDefault()}>
-                            Hi, {user.name}
-                        </div>
-                    </Dropdown>
-                </HeaderRight>
-            </Header>
+            <PageHeader/>
             <Main>
-                <ProjectListScreen/>
+              <Router>
+                  <Routes>
+                      <Route path={'/projects'} element={<ProjectListScreen />} />
+                      <Route path={'/projects/:projectId/*'} element={< ProjectScreen />} />
+                      <Navigate to={'/projects'} />
+                  </Routes>
+              </Router>
             </Main>
         </Wrapper>
     );
 };
+
+const PageHeader = () => {
+    const {logout, user} = useAuth();
+    return <Header padding={2} between={true}>
+        <HeaderLeft gap={true}>
+            <Button type={'link'}>
+                <Logo width={'15rem'} onClick={resetRoute}/>
+            </Button>
+            <h3>项目</h3>
+            <h3>用户</h3>
+        </HeaderLeft>
+        <HeaderRight>
+            <Dropdown overlay={<Menu>
+                <Menu.Item key={'logout'}>
+                    <Button type={'link'} onClick={logout}>登出</Button>
+                </Menu.Item>
+            </Menu>}>
+                <div onClick={e => e.preventDefault()}>
+                    Hi, {user.name}
+                </div>
+            </Dropdown>
+        </HeaderRight>
+    </Header>
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,7 +60,7 @@ const Wrapper = styled.div`
 
 const Header = styled(Row)`
   height: 6rem;
-  box-shadow:  0 0 5px 0 rgba(0,0,0, 0.2);
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   z-index: 1
 `
 const HeaderLeft = styled(Row)``

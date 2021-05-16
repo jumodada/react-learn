@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {User} from "./search-panel";
 import {Table} from "antd";
 import dayjs from "dayjs";
+import {Link} from "react-router-dom";
 
 interface Project {
     key: number;
@@ -25,6 +26,11 @@ export const List = ({list, ...props}: ListProps) => {
             {
                 title: '名称', key: 'name', dataIndex: 'name', sorter: (a: any, b: any) => {
                     return a.name.localeCompare(b)
+                },
+                render(value,project){
+                    return <Link to={String(project.id)}>
+                        {project.name}
+                    </Link>
                 }
             },
             {
