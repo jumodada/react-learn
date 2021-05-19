@@ -27,7 +27,7 @@ export const AuthProvider = ({children}: any) => {
     const logout = () => auth.logout().then(() => setUser(null))
 
     useMount(() => {
-        run(bootstrapUser()).then(setUser)
+        run(bootstrapUser).then(setUser)
     })
     const setLoginStatus = () => setIsRegister(!isRegister)
     if(isLoading){

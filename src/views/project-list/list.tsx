@@ -1,33 +1,28 @@
-import React, {useState} from "react";
-import {User} from "./search-panel";
+import React from "react";
 import {Table} from "antd";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
+import {Pin} from "../../components/pin";
+import {useEditProject} from "./project";
 
-interface Project {
-    key: number;
-    id: string;
-    name: string;
-    personId: string;
-    pin: boolean;
-    organization: string;
-}
 
-interface ListProps {
-    list: Project[];
-    users: User[];
-    loading: boolean
-}
-
-export const List = ({list, ...props}: ListProps) => {
+export const List = ({list, retry, ...props}: any) => {
+    const {mutate} = useEditProject()
+    const changePin: any = (id: number) => (pin: boolean) => mutate(id, pin).then(() => retry())
 
     return (
         <Table columns={[
             {
+                title: '收藏',
+                render(value, project) {
+                    return <Pin checked={project.pin} onCheckedChange={changePin(project)}/>
+                }
+            },
+            {
                 title: '名称', key: 'name', dataIndex: 'name', sorter: (a: any, b: any) => {
                     return a.name.localeCompare(b)
                 },
-                render(value,project){
+                render(value, project) {
                     return <Link to={String(project.id)}>
                         {project.name}
                     </Link>
@@ -35,7 +30,7 @@ export const List = ({list, ...props}: ListProps) => {
             },
             {
                 title: '负责人', render(project: any) {
-                    return props.users.find((user) => user.id === project.personId)?.name || "未知"
+                    return props.users.find((user: any) => user.id === project.personId)?.name || "未知"
                 }
             },
             {
@@ -46,7 +41,7 @@ export const List = ({list, ...props}: ListProps) => {
                     </span>
                 }
             }
-        ]} {...props} pagination={false} dataSource={list} rowKey={record=> record.id}>
+        ]} {...props} pagination={false} dataSource={list} rowKey={record => record.id}>
 
         </Table>
     );

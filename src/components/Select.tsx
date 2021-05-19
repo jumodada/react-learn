@@ -7,7 +7,7 @@ function toNumber(value: any) {
 }
 
 export function IdSelect({value, onChange, defaultOptions, options, ...params}: any) {
-    return <Select {...params} value={toNumber(value)} onChange={value => onChange(toNumber(value))}>
+    return <Select {...params} value={options.length ? toNumber(value) : ''} onChange={value => onChange(toNumber(value))}>
         {defaultOptions ? <Select.Option value={0}>
             {defaultOptions}
         </Select.Option> : null}

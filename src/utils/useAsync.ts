@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useRef, useState} from "react";
 
 const defaultState = {
     stat: 'idle',
@@ -7,7 +7,7 @@ const defaultState = {
 }
 
 export const useAsync = (initialState?: any) => {
-    const [state,setState] = useState({
+    const [state, setState] = useState({
         ...defaultState,
         ...initialState
     })
@@ -21,19 +21,23 @@ export const useAsync = (initialState?: any) => {
         stat: 'error',
         error
     })
-    const run = (promise: any)=>{
-        if(!promise || !promise.then) {
+    const preCallback = useRef(()=>{})
+    const run = (callback: any) => {
+        const promise = callback()
+        if (!promise || !promise.then) {
             throw new Error('不是promise')
         }
+        preCallback.current = callback
         setState({...state, stat: 'loading'})
-        return promise.then((data: any)=>{
+        return promise.then((data: any) => {
             setData(data)
             return data
-        }).catch((err: any)=>{
+        }).catch((err: any) => {
             setError(err)
             return err
         })
     }
+
     return {
         isIdle: state.stat === 'idle',
         isLoading: state.stat === 'loading',
@@ -41,6 +45,7 @@ export const useAsync = (initialState?: any) => {
         isSuccess: state.stat === 'success',
         run,
         setData,
-        ...state
+        ...state,
+        retry: ()=>run(preCallback.current)
     }
 }
