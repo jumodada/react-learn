@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import React from "react";
 import {Form, Input, Select} from "antd";
+import {IdSelect} from "../../components/select";
 
 export interface User {
     id: string;
@@ -37,22 +38,22 @@ export const SearchPanel = ({users, param, setParam}: SearchPanelProps) => {
                 />
             </Form.Item>
             <Form.Item>
-                <Select
+                <IdSelect
+                    style={{width: '200px'}}
                     value={param.personId}
-                    onChange={value =>
+                    allowClear
+                    options={users}
+                    placeholder={'负责人'}
+                    onChange={(value: any) =>
                         setParam({
                             ...param,
                             personId: value
                         })
                     }
                 >
-                    <Select.Option key={0} value={""}>负责人</Select.Option>
-                    {users.map((user) => (
-                        <Select.Option key={user.id} value={user.id}>
-                            {user.name}
-                        </Select.Option>
-                    ))}
-                </Select>
+
+                </IdSelect>
+
             </Form.Item>
 
         </Form>

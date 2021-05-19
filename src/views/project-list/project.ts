@@ -15,7 +15,7 @@ export const useProjects = (param?: any)=>{
         client('users').then(res => {
             setUsers(() => res)
         })
-    });
+    })
 
     return {...result, users}
 }

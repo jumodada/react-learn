@@ -8,6 +8,7 @@ import {useUrlQueryParam} from "../../utils/url";
 
 export const ProjectListScreen = () => {
     const [param,setParam] = useUrlQueryParam()
+
     const debouncedParam = useDebounce(param, 200);
 
     const {isLoading, data: list, users} = useProjects(debouncedParam)

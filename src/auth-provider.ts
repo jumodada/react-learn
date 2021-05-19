@@ -13,7 +13,6 @@ export const handleUserResponse = ({user}: { user: User }) => {
 
 export const LoginOrRegister = (data: { username: string; password: string }, url = 'login') => {
     return request(url, {data,method: 'POST'}).then(async (res) => {
-        console.log(res)
         return handleUserResponse(res)
     }).catch(err=>{})
 };
