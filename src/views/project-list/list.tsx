@@ -5,11 +5,10 @@ import {Link} from "react-router-dom";
 import {Pin} from "../../components/pin";
 
 
-export const List = ({list, mutate, ...props}: any) => {
-    const changePin: any = (id: number) => (pin: boolean) => {
-        mutate(id, pin)
+export const List = ({list, mutate,retry, ...props}: any) => {
+    const changePin: any = (project: any) => (pin: boolean) => {
+        mutate(project, pin).then(retry)
     }
-
 
     return (
         <Table columns={[
@@ -42,7 +41,7 @@ export const List = ({list, mutate, ...props}: any) => {
                     </span>
                 }
             }
-        ]} {...props} pagination={false} dataSource={list} rowKey={record => record.id}>
+        ]} {...props} pagination={false} dataSource={list? list.lists : []} rowKey={record => record.id}>
 
         </Table>
     );

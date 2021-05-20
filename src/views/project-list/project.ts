@@ -5,39 +5,23 @@ import {useRequest} from "../../fetch";
 import {EditLists, GetProjectLists} from "../../fetch/project";
 
 export const useProjects = (param?: any) => {
-    const {run, ...result} = useAsync()
-    const [users, setUsers] = useState([])
-    useEffect(() => {
-        run(GetProjectLists(client,param))
-    }, [param])
-
     const client = useRequest()
+    const {request, ...result} = useAsync([{method: GetProjectLists(client,param),name:'lists'},{
+        method: EditLists(client),
+        name: 'edit'
+    }])
+    const [users, setUsers] = useState([])
+    const [getLists,editLists] = request
+    useEffect(() => {
+        getLists.run()
+    }, [param])
     useMount(() => {
         client('users').then(res => {
             setUsers(() => res)
         })
     })
+    console.log({...result})
     return {
-        ...result, users, mutate(params: any, pin: boolean) {
-            return run(EditLists(client,params,pin))
-        },
+        ...result, users, mutate: editLists.run,retry: getLists.run
     }
 }
-
-// export function useEditProject() {
-//     const {run, ...asyncParams} = useAsync()
-//     const client = useRequest()
-//     return {
-//         mutate(params: any, pin: boolean) {
-//             return run(() => client(`projects/${params.id}`, {
-//                 data: {
-//                     ...params,
-//                     pin
-//                 },
-//                 method: 'PATCH'
-//             }))
-//         },
-//         ...asyncParams
-//     }
-// }
-//

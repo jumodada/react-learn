@@ -4,8 +4,8 @@ export function GetProjectLists(client: any,param: any) {
 }
 
 
-export function EditLists(client:any,params: any, pin: boolean) {
-    return ()=>client(`projects/${params.id}`, {
+export function EditLists(client:any) {
+    return (params: any, pin: boolean)=>client(`projects/${params.id}`, {
         data: {
             ...params,
             pin
