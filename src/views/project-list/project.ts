@@ -1,38 +1,43 @@
 import {useEffect, useState} from "react";
-import {cleanObject, useMount} from "../../utils";
+import { useMount} from "../../utils";
 import {useAsync} from "../../utils/useAsync";
 import {useRequest} from "../../fetch";
+import {EditLists, GetProjectLists} from "../../fetch/project";
 
-export const useProjects = (param?: any)=>{
-    const {run,...result} = useAsync()
-    const client = useRequest()
+export const useProjects = (param?: any) => {
+    const {run, ...result} = useAsync()
     const [users, setUsers] = useState([])
     useEffect(() => {
-        run(()=>client('projects', {data: cleanObject(param || {})}))
+        run(GetProjectLists(client,param))
     }, [param])
 
+    const client = useRequest()
     useMount(() => {
         client('users').then(res => {
             setUsers(() => res)
         })
     })
-
-    return {...result, users}
-}
-
-export function useEditProject() {
-    const {run,...asyncParams} = useAsync()
-    const client = useRequest()
     return {
-        mutate(params: any,pin: boolean) {
-            return run(()=>client(`projects/${params.id}`,{
-                data: {
-                    ...params,
-                    pin
-                },
-                method: 'PATCH'
-            }))
+        ...result, users, mutate(params: any, pin: boolean) {
+            return run(EditLists(client,params,pin))
         },
-        ...asyncParams
     }
 }
+
+// export function useEditProject() {
+//     const {run, ...asyncParams} = useAsync()
+//     const client = useRequest()
+//     return {
+//         mutate(params: any, pin: boolean) {
+//             return run(() => client(`projects/${params.id}`, {
+//                 data: {
+//                     ...params,
+//                     pin
+//                 },
+//                 method: 'PATCH'
+//             }))
+//         },
+//         ...asyncParams
+//     }
+// }
+//

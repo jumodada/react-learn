@@ -3,12 +3,13 @@ import {Table} from "antd";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
 import {Pin} from "../../components/pin";
-import {useEditProject} from "./project";
 
 
-export const List = ({list, retry, ...props}: any) => {
-    const {mutate} = useEditProject()
-    const changePin: any = (id: number) => (pin: boolean) => mutate(id, pin).then(() => retry())
+export const List = ({list, mutate, ...props}: any) => {
+    const changePin: any = (id: number) => (pin: boolean) => {
+        mutate(id, pin)
+    }
+
 
     return (
         <Table columns={[

@@ -6,10 +6,9 @@ const defaultState = {
     error: null
 }
 
-export const useAsync = (initialState?: any) => {
+export const useAsync = () => {
     const [state, setState] = useState({
         ...defaultState,
-        ...initialState
     })
     const setData = (data: any) => setState({
         data,
@@ -21,9 +20,11 @@ export const useAsync = (initialState?: any) => {
         stat: 'error',
         error
     })
+
     const preCallback = useRef(()=>{})
     const run = (callback: any) => {
         const promise = callback()
+        console.log(promise)
         if (!promise || !promise.then) {
             throw new Error('不是promise')
         }
@@ -37,7 +38,6 @@ export const useAsync = (initialState?: any) => {
             return err
         })
     }
-
     return {
         isIdle: state.stat === 'idle',
         isLoading: state.stat === 'loading',
