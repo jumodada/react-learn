@@ -1,11 +1,10 @@
-import {User} from "./views/project-list/search-panel";
 import {request} from "./fetch";
 
 const localStorageKey = "__auth_provider_token__";
 
 export const getToken = () => window.localStorage.getItem(localStorageKey);
 
-export const handleUserResponse = ({user}: { user: User }) => {
+export const handleUserResponse = ({user}: { user: any }) => {
     window.localStorage.setItem(localStorageKey, user.token || "");
     return user;
 };

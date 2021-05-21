@@ -8,7 +8,7 @@ export function useUrlQueryParam(): any {
         () => Object.fromEntries(searchParams), [searchParams]
     ),
         (params: Partial<any>)=>{
-            const c = cleanObject({...Object.fromEntries(searchParams),...params}) as any
+            const c = cleanObject({...Object.fromEntries(searchParams),...params})
             return setSearchParams(c)
         }
     ]

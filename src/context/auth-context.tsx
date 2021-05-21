@@ -22,7 +22,7 @@ const bootstrapUser = async () => {
 export const AuthProvider = ({children}: any) => {
     const  {data: user, setData: setUser, isLoading, run} = useAsync()
     console.log(isLoading)
-    const [isRegister, setIsRegister] = useState(false);
+    const [isRegister, setIsRegister] = useState(true);
     const login = (form: any) => run(()=>auth.LoginOrRegister(form)).then(setUser)
     const register = (form: any) => run(()=>auth.LoginOrRegister(form, 'register')).then(setUser)
     const logout = () => auth.logout().then(() => setUser(null))

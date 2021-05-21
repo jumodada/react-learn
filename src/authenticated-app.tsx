@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {ProjectListScreen} from "./views/project-list";
 import {useAuth} from "./context/auth-context";
 import {Button, Dropdown, Menu} from "antd";
@@ -9,33 +9,40 @@ import {Navigate, Route, Routes} from "react-router"
 import {BrowserRouter as Router} from "react-router-dom"
 import {ProjectScreen} from "./views/project-screen"
 import {resetRoute} from "./utils"
+import {ProjectModel} from "./views/project-list/project-model"
+import {ProjectPopover} from "./components/project-popover"
 
 export const AuthenticatedApp = () => {
 
+    const [modelShow, setModelShow] = useState(false)
+    const openModel =  ()=>setModelShow(true)
     return (
         <Wrapper>
-            <PageHeader/>
+            <PageHeader openModel={openModel}/>
             <Main>
-              <Router>
-                  <Routes>
-                      <Route path={'/projects'} element={<ProjectListScreen />} />
-                      <Route path={'/projects/:projectId/*'} element={< ProjectScreen />} />
-                      <Navigate to={'/projects'} />
-                  </Routes>
-              </Router>
+                <Router>
+                    <Routes>
+                        <Route path={'/projects'} element={<ProjectListScreen openModel={openModel}/>}/>
+                        <Route path={'/projects/:projectId/*'} element={< ProjectScreen/>}/>
+                        <Navigate to={'/projects'}/>
+                    </Routes>
+                </Router>
             </Main>
+            <ProjectModel visible={modelShow} toClose={() => setModelShow(false)}>
+
+            </ProjectModel>
         </Wrapper>
     );
-};
 
-const PageHeader = () => {
+};
+const PageHeader = ({openModel}: any) => {
     const {logout, user} = useAuth();
     return <Header padding={2} between={true}>
         <HeaderLeft gap={true}>
             <Button type={'link'}>
                 <Logo width={'15rem'} onClick={resetRoute}/>
             </Button>
-            <h3>项目</h3>
+            <ProjectPopover openModel={openModel}/>
             <h3>用户</h3>
         </HeaderLeft>
         <HeaderRight>

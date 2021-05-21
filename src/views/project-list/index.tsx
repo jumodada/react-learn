@@ -5,16 +5,20 @@ import {useDebounce, useDocumentTitle} from "../../utils";
 import styled from "@emotion/styled"
 import {useProjects} from "./project";
 import {useUrlQueryParam} from "../../utils/url";
+import {Button, Row} from "antd";
 
-export const ProjectListScreen = () => {
+export const ProjectListScreen = ({openModel}: any) => {
     const [param, setParam] = useUrlQueryParam()
     const {isLoading, data, users, retry, mutate} = useProjects(useDebounce(param, 200))
     useDocumentTitle('项目列表', false)
     return (
         <Wrapper>
-            <h1>项目经验</h1>
+            <Row justify={'space-between'}>
+                <h1>项目列表</h1>
+                <Button onClick={openModel}>创建项目</Button>
+            </Row>
             <SearchPanel users={users} param={param} setParam={setParam}/>
-            <List mutate={mutate} loading={isLoading} users={users} list={data} retry={retry}/>
+            <List openModel={openModel} mutate={mutate} loading={isLoading} users={users} list={data} retry={retry}/>
         </Wrapper>
     );
 }

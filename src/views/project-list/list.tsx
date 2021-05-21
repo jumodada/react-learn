@@ -1,16 +1,16 @@
 import React from "react";
-import {Table} from "antd";
+import {Button, Dropdown, Menu, Table} from "antd";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
 import {Pin} from "../../components/pin";
+import {ButtonNoPadding} from "../../components/lib";
 
 
-export const List = ({list, mutate,retry, ...props}: any) => {
+export const List = ({list, mutate, retry, openModel,...props}: any) => {
     const changePin: any = (project: any) => (pin: boolean) => {
-        mutate(project, pin)
+        mutate(project, pin).then(retry)
     }
 
-    console.log(list)
     return (
         <Table columns={[
             {
@@ -41,8 +41,21 @@ export const List = ({list, mutate,retry, ...props}: any) => {
                         {(project && project.created) ? dayjs(project.created).format('YYYY-MM-DD') : '无'}
                     </span>
                 }
+            },
+            {
+                render(value, project){
+                    return <Dropdown overlay={
+                        <Menu>
+                            <Menu.Item key={'edit'}>
+                                <ButtonNoPadding onClick={openModel} type={'link'}>编辑</ButtonNoPadding>
+                            </Menu.Item>
+                        </Menu>
+                    }>
+                        <ButtonNoPadding type={'link'}>...</ButtonNoPadding>
+                    </Dropdown>
+                }
             }
-        ]} {...props} pagination={false} dataSource={list? list.lists : []} rowKey={record => record.id}>
+        ]} {...props} pagination={false} dataSource={list ? list.lists : []} rowKey={record => record.id}>
 
         </Table>
     );

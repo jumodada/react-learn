@@ -4,9 +4,9 @@ import {useMountRef} from "./index";
 export const useAsync = (request?: any[]) => {
     const [state, setState] = useState({
         stat: 'idle',
-        data: null as any,
+        data: null,
         error: null
-    })
+    } as any)
     const mountRef = useMountRef()
     const setData = (data: any, name?: string) => {
         const newData = {
