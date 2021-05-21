@@ -15,10 +15,10 @@ const text: any = {
 }
 export const useLogin = (isLogin = true) => {
     return function useLoginOrRegister() {
-        const {login, setLoginStatus, register} = useAuth()
+        const {login, setLoginStatus, register,isLoading} = useAuth()
         const submit = isLogin ? login : register
         const handleSubmit = ({username, password}: any) => {
-            submit({username, password});
+            submit({username, password})
         };
 
         const htmlText = text[String(isLogin)]
@@ -31,7 +31,7 @@ export const useLogin = (isLogin = true) => {
                     <Input type="password" id={"password"}/>
                 </Form.Item>
                 <Form.Item>
-                    <LongButton htmlType={'submit'} type={"primary"}>{htmlText.loginText}</LongButton>
+                    <LongButton loading={isLoading} htmlType={'submit'} type={"primary"}>{htmlText.loginText}</LongButton>
                     <RegisterDivider>
                         <div onClick={() => setLoginStatus(false)}>
                             {htmlText.toggleText}

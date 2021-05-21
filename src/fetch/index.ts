@@ -2,6 +2,7 @@ import qs from "qs";
 import {logout} from "../auth-provider";
 import {useAuth} from "../context/auth-context";
 import {message} from "antd"
+import {useCallback} from "react";
 
 const root = process.env.REACT_APP_API_URL
 
@@ -32,7 +33,7 @@ export const request = async (url: string, {data, token, headers, method = 'GET'
         } else {
             return Promise.reject(data)
         }
-    }).catch(err=>{
+    }).catch(err => {
         message.error(err.message || '请求失败');
     })
 }
@@ -40,5 +41,8 @@ export const request = async (url: string, {data, token, headers, method = 'GET'
 
 export function useRequest() {
     const {user} = useAuth()
-    return (...[url, config]: Parameters<typeof request>) => request(url, {...config, token: user.token})
+    return useCallback((...[url, config]: Parameters<typeof request>) => request(url, {
+        ...config,
+        token: user.token
+    }), [user.token])
 }

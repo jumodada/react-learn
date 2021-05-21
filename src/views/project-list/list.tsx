@@ -7,9 +7,10 @@ import {Pin} from "../../components/pin";
 
 export const List = ({list, mutate,retry, ...props}: any) => {
     const changePin: any = (project: any) => (pin: boolean) => {
-        mutate(project, pin).then(retry)
+        mutate(project, pin)
     }
 
+    console.log(list)
     return (
         <Table columns={[
             {

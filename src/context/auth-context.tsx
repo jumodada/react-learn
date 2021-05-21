@@ -21,9 +21,10 @@ const bootstrapUser = async () => {
 
 export const AuthProvider = ({children}: any) => {
     const  {data: user, setData: setUser, isLoading, run} = useAsync()
+    console.log(isLoading)
     const [isRegister, setIsRegister] = useState(false);
-    const login = (form: any) => auth.LoginOrRegister(form).then(setUser);
-    const register = (form: any) => auth.LoginOrRegister(form, 'register').then(setUser)
+    const login = (form: any) => run(()=>auth.LoginOrRegister(form)).then(setUser)
+    const register = (form: any) => run(()=>auth.LoginOrRegister(form, 'register')).then(setUser)
     const logout = () => auth.logout().then(() => setUser(null))
 
     useMount(() => {
@@ -36,7 +37,7 @@ export const AuthProvider = ({children}: any) => {
     return (
         <AuthContext.Provider
             children={children}
-            value={{user, login, register, logout, isRegister, setLoginStatus}}
+            value={{user, login, register, logout, isRegister, setLoginStatus, isLoading}}
         />
     );
 };

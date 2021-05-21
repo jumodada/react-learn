@@ -20,7 +20,7 @@ export const useProjects = (param?: any) => {
             setUsers(() => res)
         })
     })
-    console.log({...result})
+
     return {
         ...result, users, mutate: editLists.run,retry: getLists.run
     }

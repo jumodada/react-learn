@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useCallback, useState} from "react";
 import {useMountRef} from "./index";
 
 export const useAsync = (request?: any[]) => {
@@ -7,7 +7,7 @@ export const useAsync = (request?: any[]) => {
         data: null as any,
         error: null
     })
-    const mountedRef = useMountRef()
+    const mountRef = useMountRef()
     const setData = (data: any, name?: string) => {
         const newData = {
             data,
@@ -28,21 +28,23 @@ export const useAsync = (request?: any[]) => {
         error
     })
 
-    const run = (callback: any, name?: string, ...arg: any) => {
+    const run = useCallback((callback: any, name?: string, ...arg: any) => {
         const promise = callback(...arg)
         if (!promise || !promise.then) {
             throw new Error('不是promise')
         }
-        setState({...state, stat: 'loading'})
+        setState((preState: any) => {
+            console.log(preState)
+            return {...preState, stat: 'loading'}
+        })
         return promise.then((data: any) => {
-            if (mountedRef.current) setData(data, name)
+            if (mountRef.current) setData(data, name)
             return data
         }).catch((err: any) => {
             setError(err)
             return err
         })
-    }
-
+    }, [state, setData, setError])
     return {
         isIdle: state.stat === 'idle',
         isLoading: state.stat === 'loading',
