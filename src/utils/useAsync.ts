@@ -1,4 +1,5 @@
-import { useState} from "react";
+import {useState} from "react";
+import {useMountRef} from "./index";
 
 export const useAsync = (request?: any[]) => {
     const [state, setState] = useState({
@@ -6,17 +7,18 @@ export const useAsync = (request?: any[]) => {
         data: null as any,
         error: null
     })
+    const mountedRef = useMountRef()
     const setData = (data: any, name?: string) => {
         const newData = {
             data,
             stat: 'success',
             error: null
         }
-        if(name){
-           newData.data ={
-               ...state.data,
-               [name]: data
-           }
+        if (name) {
+            newData.data = {
+                ...state.data,
+                [name]: data
+            }
         }
         setState(newData)
     }
@@ -26,15 +28,14 @@ export const useAsync = (request?: any[]) => {
         error
     })
 
-    const run = (callback: any,name?: string, ...arg: any) => {
+    const run = (callback: any, name?: string, ...arg: any) => {
         const promise = callback(...arg)
-        console.log(name)
         if (!promise || !promise.then) {
             throw new Error('不是promise')
         }
         setState({...state, stat: 'loading'})
         return promise.then((data: any) => {
-            setData(data, name)
+            if (mountedRef.current) setData(data, name)
             return data
         }).catch((err: any) => {
             setError(err)
@@ -50,10 +51,10 @@ export const useAsync = (request?: any[]) => {
         run,
         setData,
         ...state,
-        request: (request || []).map(req=>{
-            const {method,name} = req
+        request: (request || []).map(req => {
+            const {method, name} = req
             return {
-                run: (...arg: any)=>run(method, name, ...arg)
+                run: (...arg: any) => run(method, name, ...arg)
             }
         }),
     }
