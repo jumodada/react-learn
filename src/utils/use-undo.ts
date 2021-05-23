@@ -1,74 +1,89 @@
-import {useCallback, useState} from "react";
+import { useCallback, useReducer } from "react";
+type State<T> = {
+    pre: T[];
+    present: T;
+    next: T[];
+};
 
 
-const UNDO = 'UNDO'
-const REDO = 'REDO'
+const undoReducer = <T>(state: State<T>, action: any) => {
+    const { pre, present, next } = state;
+    const { newPresent } = action;
 
-export function useUndo<T>(initialPresent: T) {
-    const [state, setState] = useState({
+    switch (action.type) {
+        case 'UNDO': {
+            if (pre.length === 0) return state;
+
+            const previous = pre[pre.length - 1];
+            const newPast = pre.slice(0, pre.length - 1);
+
+            return {
+                pre: newPast,
+                present: previous,
+                next: [present, ...next],
+            };
+        }
+
+        case 'REDO': {
+            if (next.length === 0) return state;
+
+            const nextVal = next[0];
+            const newFuture = next.slice(1);
+
+            return {
+                pre: [...pre, present],
+                present: nextVal,
+                next: newFuture,
+            };
+        }
+
+        case 'SET': {
+            if (newPresent === present) {
+                return state;
+            }
+            return {
+                pre: [...pre, present],
+                present: newPresent,
+                next: [],
+            };
+        }
+
+        case 'RESET': {
+            return {
+                pre: [],
+                present: newPresent,
+                next: [],
+            };
+        }
+    }
+    return state;
+};
+
+export const useUndo = <T>(initialPresent: T) => {
+    const [state, dispatch] = useReducer(undoReducer, {
         pre: [],
-        current: initialPresent,
-        next: []
-    })
-    const canUndo = state.pre.length !== 0
+        present: initialPresent,
+        next: [],
+    } as State<T>);
 
-    const canRedo = state.next.length !== 0
+    const canUndo = state.pre.length !== 0;
+    const canRedo = state.next.length !== 0;
 
-    const undo = useCallback(() => {
-            setState((currentState: any) => {
-                const {past, present, future} = currentState
-                if (past.length === 0) return currentState
-                const previous = past[past.length - 1]
-                const curPast = past.slice(0, past.length - 1)
-                return {
-                    pre: curPast,
-                    current: previous,
-                    next: [present, ...future]
-                }
+    const undo = useCallback(() => dispatch({ type: "UNDO" }), []);
 
-            })
-        }, []
-    )
+    const redo = useCallback(() => dispatch({ type: "REDO" }), []);
 
-    const redo = useCallback(() => {
-        setState((currentState: any) => {
-            if (!canRedo) return
-            const {past, present, future} = currentState
-            if (future.length === 0) return currentState
-            const next = future[0]
-            const newFuture = future.slice(1)
-            return {
-                pre: [...past, present],
-                current: next,
-                next: newFuture
-            }
-        })
-    }, [])
+    const set = useCallback(
+        (newPresent: T) => dispatch({ type: "SET", newPresent }),
+        []
+    );
 
-    const set = useCallback((newPresent: any)=>{
-        setState((currentState: any) => {
-            const {past, present, future} = currentState
-            if (newPresent === present) return currentState
-            return {
-                pre: [...past, present],
-                current: newPresent,
-                next: []
-            }
-        })
-    },[])
+    const reset = useCallback(
+        (newPresent: T) => dispatch({ type: "RESET", newPresent }),
+        []
+    );
 
-   const reset = useCallback((newPresent: any)=>{
-       setState(() => {
-           return {
-               pre: [],
-               current: newPresent,
-               next: []
-           }
-       })
-   },[])
+    return [state, { set, reset, undo, redo, canUndo, canRedo }] as const;
+};
 
-    return [
-        state,
-        {set, reset, undo, redo, canUndo, canRedo}
-    ]
-}
+
