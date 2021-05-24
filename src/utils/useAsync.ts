@@ -1,12 +1,22 @@
-import {useCallback, useState} from "react";
+import {useCallback, useReducer} from "react";
 import {useMountRef} from "./index";
 
+
+function useSafeDispatch(dispatch: (...arg: any) => void) {
+    const mountedRef = useMountRef()
+    return useCallback((...args: any) => (mountedRef.current ? dispatch(...args) : void 0), [dispatch, mountedRef])
+}
+
 export const useAsync = (request?: any[]) => {
-    const [state, setState] = useState({
+    const [state, dispatch] = useReducer((state: any, action: any) => ({
+        ...state,
+        ...action
+    }), {
         stat: 'idle',
         data: null,
         error: null
-    } as any)
+    })
+    const safeDispatch = useSafeDispatch(dispatch)
     const mountRef = useMountRef()
     const setData = (data: any, name?: string) => {
         const newData = {
@@ -20,23 +30,16 @@ export const useAsync = (request?: any[]) => {
                 [name]: data
             }
         }
-        setState(newData)
+        safeDispatch(newData)
     }
-    const setError = (error: any) => setState({
-        ...state,
-        stat: 'error',
-        error
-    })
+    const setError = (error: any) => safeDispatch({stat: 'error'})
 
     const run = useCallback((callback: any, name?: string, ...arg: any) => {
         const promise = callback(...arg)
         if (!promise || !promise.then) {
             throw new Error('不是promise')
         }
-        setState((preState: any) => {
-            console.log(preState)
-            return {...preState, stat: 'loading'}
-        })
+        safeDispatch({stat: 'loading'})
         return promise.then((data: any) => {
             if (mountRef.current) setData(data, name)
             return data
@@ -45,6 +48,7 @@ export const useAsync = (request?: any[]) => {
             return err
         })
     }, [state, setData, setError])
+    console.log(state)
     return {
         isIdle: state.stat === 'idle',
         isLoading: state.stat === 'loading',
