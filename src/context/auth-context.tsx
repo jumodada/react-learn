@@ -1,54 +1,58 @@
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import * as auth from "../auth-provider";
 import {request} from "../fetch";
 import {useMount} from "../utils";
 import {useAsync} from "../utils/useAsync";
 import {FullScreenLoading} from "../components/lib";
+import {getUser, Login, Logout, Register} from "../store/auth.slice"
+import {useDispatch, useSelector} from "react-redux";
 
-
-const AuthContext = React.createContext<any>(undefined);
-
-const bootstrapUser = async () => {
-    let user = null
-    const token = auth.getToken()
-    if (token) {
-        const data = await request('me', {token})
-        if(!data) return
-        user = data.user
-    }
-    return user
+export interface AuthForm {
+    username: string;
+    password: string;
 }
 
-export const AuthProvider = ({children}: any) => {
-    const  {data: user, setData: setUser, isLoading, run} = useAsync()
-    console.log(isLoading)
-    const [isRegister, setIsRegister] = useState(true);
-    const login = (form: any) => run(()=>auth.LoginOrRegister(form)).then(setUser)
-    const register = (form: any) => run(()=>auth.LoginOrRegister(form, 'register')).then(setUser)
-    const logout = () => auth.logout().then(() => setUser(null))
-
-    useMount(() => {
-        run(bootstrapUser).then(setUser)
-    })
-    const setLoginStatus = () => setIsRegister(!isRegister)
-    if(isLoading){
-        return <FullScreenLoading />
+export const bootstrapUser = async () => {
+    let user = null;
+    const token = auth.getToken();
+    if (token) {
+        const data = await request("me", { token });
+        user = data.user;
     }
-    return (
-        <AuthContext.Provider
-            children={children}
-            value={{user, login, register, logout, isRegister, setLoginStatus, isLoading}}
-        />
-    );
+    return user;
 };
 
+export const AuthProvider = ({ children }: { children: any }) => {
+    const { error, isLoading, isIdle, isError, run } = useAsync();
+    const dispatch: (...args: unknown[]) => Promise<any> = useDispatch();
+
+    useMount(() => {
+        run(dispatch(bootstrapUser()));
+    });
+
+    if (isIdle || isLoading) {
+        return <FullScreenLoading />;
+    }
+
+    return <div>{children}</div>;
+};
 
 export const useAuth = () => {
-    const context = React.useContext(AuthContext);
-    if (!context) {
-        throw new Error("hooks error");
-    }
-    return context;
-}
-
-
+    const dispatch: (...args: unknown[]) => Promise<any> = useDispatch();
+    const user = useSelector(getUser);
+    const login = useCallback(
+        (form: AuthForm) => dispatch(Login(form)),
+        [dispatch]
+    );
+    const register = useCallback(
+        (form: AuthForm) => dispatch(Register(form)),
+        [dispatch]
+    );
+    const logout = useCallback(() => dispatch(Logout()), [dispatch]);
+    return {
+        user,
+        login,
+        register,
+        logout,
+    };
+};

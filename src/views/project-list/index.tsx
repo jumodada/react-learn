@@ -6,9 +6,13 @@ import styled from "@emotion/styled"
 import {useProjects} from "./project";
 import {useUrlQueryParam} from "../../utils/url";
 import {Button, Row} from "antd";
+import {useDispatch} from "react-redux";
+import {projectListActions} from "./project-list.slice";
 
-export const ProjectListScreen = ({openModel}: any) => {
+export const ProjectListScreen = () => {
     const [param, setParam] = useUrlQueryParam()
+    const dispatch = useDispatch()
+    const openModel = () => dispatch(projectListActions.openProjectModal())
     const {isLoading, data, users, retry, mutate} = useProjects(useDebounce(param, 200))
     useDocumentTitle('项目列表', false)
     return (

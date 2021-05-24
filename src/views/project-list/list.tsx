@@ -4,13 +4,16 @@ import dayjs from "dayjs";
 import {Link} from "react-router-dom";
 import {Pin} from "../../components/pin";
 import {ButtonNoPadding} from "../../components/lib";
+import {useDispatch} from "react-redux";
+import {projectListActions} from "./project-list.slice";
 
 
-export const List = ({list, mutate, retry, openModel,...props}: any) => {
+export const List = ({list, mutate, retry,...props}: any) => {
     const changePin: any = (project: any) => (pin: boolean) => {
         mutate(project, pin).then(retry)
     }
-
+    const dispatch = useDispatch()
+    const openModel = () => dispatch(projectListActions.openProjectModal())
     return (
         <Table columns={[
             {
