@@ -1,46 +1,34 @@
-import React, {useRef, useState} from "react"
-import {List, Popover, Typography, Divider} from "antd"
-import {useProjects} from "../views/project-list/project";
+import React from "react";
+import { Divider, List, Popover, Typography } from "antd";
+import { useProjects } from "utils/project";
 import styled from "@emotion/styled";
-import {ButtonNoPadding} from "./lib";
-import {useProjectModal} from "../views/project-list/utils";
 
-export function ProjectPopover() {
-    const {data} = useProjects()
-    const { open } = useProjectModal();
-    function createProject() {
-        (popover.current as any).setPopupVisible(false)
-        open()
-    }
-    const popover = useRef()
-    const content = <Wrapper>
-        <Typography.Text type={'secondary'}>收藏项目</Typography.Text>
-        <List>
-            {
-                (data ? data.lists : []).filter((d: any) => d.pin).map((item: any) => {
-                    return <List.Item key={item.id}>
-                        <List.Item.Meta title={item.name}>
+export const ProjectPopover = (props: { projectButton: JSX.Element }) => {
+  const { data: projects, isLoading } = useProjects();
+  const pinnedProjects = projects?.filter((project) => project.pin);
 
-                        </List.Item.Meta>
-                    </List.Item>
-                })
-            }
-        </List>
-        <Divider/>
-        <ButtonNoPadding onClick={createProject} type={'link'}>创建项目</ButtonNoPadding>
-    </Wrapper>
-    return <Popover ref={popover} placement={'bottom'} content={content}>
-        <Title >
-            项目
-        </Title>
+  const content = (
+    <ContentContainer>
+      <Typography.Text type={"secondary"}>收藏项目</Typography.Text>
+      <List>
+        {pinnedProjects?.map((project) => (
+          <List.Item key={project.id}>
+            <List.Item.Meta title={project.name} />
+          </List.Item>
+        ))}
+      </List>
+      <Divider />
+      {props.projectButton}
+    </ContentContainer>
+  );
+
+  return (
+    <Popover placement={"bottom"} content={content}>
+      <span>项目</span>
     </Popover>
-}
+  );
+};
 
-const Title = styled.span`
-  cursor: pointer;
-  font-weight: bold;
-`
-
-const Wrapper = styled.div`
-  min-width: 20rem;
-`
+const ContentContainer = styled.div`
+  min-width: 30rem;
+`;
