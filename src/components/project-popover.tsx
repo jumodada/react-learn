@@ -3,12 +3,14 @@ import {List, Popover, Typography, Divider} from "antd"
 import {useProjects} from "../views/project-list/project";
 import styled from "@emotion/styled";
 import {ButtonNoPadding} from "./lib";
+import {useProjectModal} from "../views/project-list/utils";
 
-export function ProjectPopover({openModel}: any) {
+export function ProjectPopover() {
     const {data} = useProjects()
+    const { open } = useProjectModal();
     function createProject() {
         (popover.current as any).setPopupVisible(false)
-        openModel()
+        open()
     }
     const popover = useRef()
     const content = <Wrapper>

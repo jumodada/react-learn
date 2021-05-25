@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import {ProjectListScreen} from "./views/project-list";
 import {useAuth} from "./context/auth-context";
 import {Button, Dropdown, Menu} from "antd";
@@ -13,36 +13,30 @@ import {ProjectModel} from "./views/project-list/project-model"
 import {ProjectPopover} from "./components/project-popover"
 
 export const AuthenticatedApp = () => {
-
-    const [modelShow, setModelShow] = useState(false)
-    const openModel =  ()=>setModelShow(true)
     return (
         <Wrapper>
-            <PageHeader openModel={openModel}/>
-            <Main>
-                <Router>
-                    <Routes>
-                        <Route path={'/projects'} element={<ProjectListScreen openModel={openModel}/>}/>
-                        <Route path={'/projects/:projectId/*'} element={< ProjectScreen/>}/>
-                        <Navigate to={'/projects'}/>
-                    </Routes>
-                </Router>
-            </Main>
-            <ProjectModel visible={modelShow} toClose={() => setModelShow(false)}>
-
-            </ProjectModel>
+            <Router>
+                <PageHeader/>
+                <Routes>
+                    <Route path={'/projects'} element={<ProjectListScreen/>}/>
+                    <Route path={'/projects/:projectId/*'} element={< ProjectScreen/>}/>
+                    <Navigate to={'/projects'}/>
+                </Routes>
+                <ProjectModel/>
+            </Router>
         </Wrapper>
+
     );
 
 };
-const PageHeader = ({openModel}: any) => {
+const PageHeader = () => {
     const {logout, user} = useAuth();
     return <Header padding={2} between={true}>
         <HeaderLeft gap={true}>
             <Button type={'link'}>
                 <Logo width={'15rem'} onClick={resetRoute}/>
             </Button>
-            <ProjectPopover openModel={openModel}/>
+            <ProjectPopover/>
             <h3>用户</h3>
         </HeaderLeft>
         <HeaderRight>

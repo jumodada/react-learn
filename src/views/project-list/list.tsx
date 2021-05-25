@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Dropdown, Menu, Table} from "antd";
+import { Dropdown, Menu, Table} from "antd";
 import dayjs from "dayjs";
 import {Link} from "react-router-dom";
 import {Pin} from "../../components/pin";
@@ -43,7 +43,7 @@ export const List = ({list, mutate, retry, openModel,...props}: any) => {
                 }
             },
             {
-                render(value, project){
+                render(){
                     return <Dropdown overlay={
                         <Menu>
                             <Menu.Item key={'edit'}>
