@@ -5,7 +5,6 @@ import { LongButton } from "unauthenticated-app/index";
 import { useAsync } from "utils/use-async";
 
 
-const apiUrl = process.env.REACT_APP_API_URL;
 
 export const LoginScreen = ({
   onError,

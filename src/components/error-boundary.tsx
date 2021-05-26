@@ -21,4 +21,3 @@ export class ErrorBoundary extends React.Component<
     return children;
   }
 }
-

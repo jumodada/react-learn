@@ -19,5 +19,4 @@ loadServer(() =>
   )
 );
 
-
 reportWebVitals();
