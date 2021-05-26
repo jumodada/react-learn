@@ -2,7 +2,7 @@
 import { jsx } from "@emotion/react";
 import React from "react";
 import { Form, Input } from "antd";
-import { Project } from "screens/project-list/list";
+import { Project } from "views/project-list/list";
 import { UserSelect } from "components/user-select";
 
 export interface User {

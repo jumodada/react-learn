@@ -2,9 +2,7 @@ import { URLSearchParamsInit, useSearchParams } from "react-router-dom";
 import { useMemo, useState } from "react";
 import { cleanObject, subset } from "utils/index";
 
-/**
- * 返回页面url中，指定键的参数值
- */
+
 export const useUrlQueryParam = <K extends string>(keys: K[]) => {
   const [searchParams, setSearchParam] = useSearchParams();
   const [stateKeys] = useState(keys);
@@ -17,8 +15,6 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
       [searchParams, stateKeys]
     ),
     (params: Partial<{ [key in K]: unknown }>) => {
-      // iterator
-      // iterator: https://codesandbox.io/s/upbeat-wood-bum3j?file=/src/index.js
       const o = cleanObject({
         ...Object.fromEntries(searchParams),
         ...params,

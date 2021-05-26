@@ -5,13 +5,13 @@ import styled from "@emotion/styled";
 
 export const ProjectPopover = (props: { projectButton: JSX.Element }) => {
   const { data: projects, isLoading } = useProjects();
-  const pinnedProjects = projects?.filter((project) => project.pin);
+  const pinnedProjects = projects?.filter((project: any) => project.pin);
 
   const content = (
     <ContentContainer>
       <Typography.Text type={"secondary"}>收藏项目</Typography.Text>
       <List>
-        {pinnedProjects?.map((project) => (
+        {pinnedProjects?.map((project: any) => (
           <List.Item key={project.id}>
             <List.Item.Meta title={project.name} />
           </List.Item>

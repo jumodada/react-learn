@@ -1,15 +1,13 @@
 import React from "react";
-import { User } from "screens/project-list/search-panel";
+import { User } from "views/project-list/search-panel";
 import { Dropdown, Menu, Table } from "antd";
 import dayjs from "dayjs";
 import { TableProps } from "antd/es/table";
-// react-router 和 react-router-dom的关系，类似于 react 和 react-dom/react-native/react-vr...
 import { Link } from "react-router-dom";
 import { Pin } from "components/pin";
 import { useEditProject } from "utils/project";
 import { ButtonNoPadding } from "components/lib";
 
-// TODO 把所有ID都改成number类型
 export interface Project {
   id: number;
   name: string;
