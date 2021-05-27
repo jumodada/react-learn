@@ -3,10 +3,9 @@ import { Button, Drawer, Form, Input, Spin } from "antd";
 import {
   useProjectModal,
   useProjectsQueryKey,
-} from "views/project-list/util";
+} from "screens/project-list/util";
 import { UserSelect } from "components/user-select";
 import { useAddProject, useEditProject } from "utils/project";
-import { useForm } from "antd/es/form/Form";
 import { ErrorBox } from "components/lib";
 import styled from "@emotion/styled";
 
@@ -22,12 +21,16 @@ export const ProjectModal = () => {
   const { mutateAsync, error, isLoading: mutateLoading } = useMutateProject(
     useProjectsQueryKey()
   );
-  const [form] = useForm();
+  const [form] = Form.useForm();
   const onFinish = (values: any) => {
     mutateAsync({ ...editingProject, ...values }).then(() => {
       form.resetFields();
       close();
     });
+  };
+  const closeModal = () => {
+    form.resetFields();
+    close();
   };
 
   const title = editingProject ? "编辑项目" : "创建项目";
@@ -39,7 +42,7 @@ export const ProjectModal = () => {
   return (
     <Drawer
       forceRender={true}
-      onClose={close}
+      onClose={closeModal}
       visible={projectModalOpen}
       width={"100%"}
     >
