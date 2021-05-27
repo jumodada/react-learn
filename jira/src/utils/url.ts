@@ -22,3 +22,10 @@ export const useUrlQueryParam = <K extends string>(keys: K[]) => {
     },
   ] as const;
 };
+
+export function useSetUrlSearchPram() {
+  return (params:{[key in string]: unknown})=>{
+
+  }
+
+}
