@@ -1,31 +1,39 @@
-import React, {useState, PureComponent, useEffect} from "react";
+import React, {useState, forwardRef, useRef, createRef} from "react";
 import './App.css';
 
 function App() {
-    const [age,setAge] = useState(0)
+    const [index,setIndex] = useState(0)
+    const refByUse = useRef()
+    const refByCreate = createRef()
+    if(!refByUse.current) refByUse.current = index
+    if(!refByCreate.current) refByCreate.current = index
     return (
         <>
-            <button onClick={()=>setAge(age+ 1)}>fuck add </button>
-            <Child age={age} />
+            <div>Current index is : {index}</div>
+            <div>useRef is { refByUse.current}</div>
+            <div>refByCreate is { refByCreate.current}</div>
+            <button onClick={()=> setIndex(index + 1)}>click me </button>
         </>
     );
 }
 
-const xx = {
-    level1: {
-        level2: 0
-    }
-}
+
 function Child({age}) {
-    xx.level1.level2 = age
+    const ref = useRef()
   return <div>
-      {age}
-    <DeepChild age={xx} />
+      <button ref={ref}>fui</button>
+      <Child2 ref={ref} />
   </div>
 }
 
+const Child2 = forwardRef(function (props,ref) {
+    console.log(ref)
+    return <div>
+        123
+    </div>
+})
+
 const DeepChild = React.memo(function ({age}) {
-    console.log(1)
     return <div>
         {age.level1.level2}
     </div>
