@@ -1,9 +1,0 @@
-{
-  "devDependencies": {
-    "immutable": "^4.0.0-rc.12",
-    "react-redux": "^7.2.4",
-    "redux": "^4.1.0",
-    "redux-immutable": "^4.0.0",
-    "redux-thunk": "^2.3.0"
-  }
-}

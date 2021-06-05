@@ -1,5 +1,5 @@
 import './App.css';
-import { GlobalStyle } from  './cssInJs';
+import { GlobalStyle } from  './style';
 import { IconStyle } from './assets/iconfont/iconfont';
 import routes from './route/index.js'
 import {renderRoutes} from "react-router-config";
