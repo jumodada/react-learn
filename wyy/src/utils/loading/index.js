@@ -17,9 +17,9 @@ const LoadingWrapper = styled.div`
       margin: auto;
       width: 60px;
       height: 60px;
-      opacity: 0.6;
+      opacity: 1;
       border-radius: 50%;
-      background-color: ${style["theme-color"]};
+      background-color: ${style.themeColor};
       animation: ${loading} 1.4s infinite ease-in;
     }
     >div:nth-child(2) {

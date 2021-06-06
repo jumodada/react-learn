@@ -9,7 +9,6 @@ import { NavLink } from 'react-router-dom';
 
 function Home (props){
     const { route } = props;
-
     return (
         <div>
             <Top>
