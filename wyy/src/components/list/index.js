@@ -4,7 +4,7 @@ import {
     ListItem,
     List
 } from './style';
-import {getCount} from "../../api/util";
+import {getCount} from "../../utils/helper";
 
 function RecommendList (props) {
     return (
@@ -16,7 +16,7 @@ function RecommendList (props) {
                         return (
                             <ListItem key={item.id + index}>
                                 <div className="img_wrapper">
-                                    <div className="decorate"></div>
+                                    <div className="decorate" />
                                     <img src={item.picUrl + "?param=300x300"} width="100%" height="100%" alt="music"/>
                                     <div className="play_count">
                                         <i className="iconfont play">&#xe885;</i>

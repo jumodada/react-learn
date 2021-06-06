@@ -1,4 +1,4 @@
-import { RankTypes } from "./config";
+import { RankTypes } from "../../request/config";
 //节流函数
 let timer;
 export function debounce(func, delay) {
@@ -11,6 +11,18 @@ export function debounce(func, delay) {
     }, delay);
   }
 }
+
+export const getCount = (count) => {
+  if (count < 0) return;
+  if (count < 10000) {
+    return count;
+  } else if (Math.floor (count / 10000) < 10000) {
+    return Math.floor (count/1000)/10 + "万";
+  } else  {
+    return Math.floor (count / 10000000)/ 10 + "亿";
+  }
+}
+
 
 //处理歌手列表拼接歌手名字
 export const getName = (list) => {
@@ -34,7 +46,7 @@ export const filterIndex = (rankList) => {
 //找出排行榜的编号
 export const filterIdx = (name) => {
   for(let key in RankTypes) {
-    if(RankTypes[key] === name) 
+    if(RankTypes[key] === name)
       return key;
   }
   return null;
