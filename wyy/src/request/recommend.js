@@ -1,4 +1,4 @@
-import { axiosInstance } from "../api";
+import { axiosInstance } from "./config";
 
 export const getBannerRequest = () => {
     return axiosInstance.get ('/banner');
