@@ -27,13 +27,14 @@ const LoadingWrapper = styled.div`
     }
 `
 
-function Loading()  {
-  return (
-    <LoadingWrapper>
-      <div/>
-      <div/>
-    </LoadingWrapper>
-  );
+function Loading(props) {
+    const { show } = props;
+    return (
+        <LoadingWrapper style={show ? {display: ""}: {display: "none"}}>
+            <div/>
+            <div/>
+        </LoadingWrapper>
+    );
 }
 
 export default React.memo(Loading);
