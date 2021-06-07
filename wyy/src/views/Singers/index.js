@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Horizen from '../../components/horizen-item';
-import {categoryTypes, alphaTypes} from "../../request/config";
+import { categoryTypes, alphaTypes } from '../../request/config'
 import {
   NavContainer,
   ListContainer,
@@ -20,7 +20,7 @@ import {
 import  LazyLoad, {forceCheck} from 'react-lazyload';
 import Scroll from './../../utils/scroll';
 import {connect} from 'react-redux';
-import Loading from '../../utils/loading'
+import Loading from '../../utils/loading';
 
 function Singers(props) {
   let [category, setCategory] = useState('');
@@ -115,7 +115,6 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(changeEnterLoading(true));
       dispatch(getSingerList(category, alpha));
     },
-    // 滑到最底部刷新部分的处理
     pullUpRefreshDispatch(category, alpha, hot, count) {
       dispatch(changePullUpLoading(true));
       dispatch(changePageCount(count+1));
@@ -125,7 +124,6 @@ const mapDispatchToProps = (dispatch) => {
         dispatch(refreshMoreSingerList(category, alpha));
       }
     },
-    //顶部下拉刷新
     pullDownRefreshDispatch(category, alpha) {
       dispatch(changePullDownLoading(true));
       dispatch(changePageCount(0));
