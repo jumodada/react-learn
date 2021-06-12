@@ -1,42 +1,34 @@
 import React, {useState, forwardRef, useRef, createRef} from "react";
 import './App.css';
 
+let index1 = 0
 function App() {
     const [index,setIndex] = useState(0)
-    const refByUse = useRef()
-    const refByCreate = createRef()
-    if(!refByUse.current) refByUse.current = index
-    if(!refByCreate.current) refByCreate.current = index
     return (
         <>
-            <div>Current index is : {index}</div>
-            <div>useRef is { refByUse.current}</div>
-            <div>refByCreate is { refByCreate.current}</div>
-            <button onClick={()=> setIndex(index + 1)}>click me </button>
+            <Child />
+            <Child />
         </>
     );
+}
+function useCount() {
+    const [count,setCount] = useState(0)
+    const increment = ()=> setCount(val=>val + 1)
+    const decrement = ()=> setCount(val=>val - 1)
+    return {
+        count,
+        increment,
+        decrement
+    }
 }
 
 
 function Child({age}) {
-    const ref = useRef()
+  const {count,increment} = useCount()
   return <div>
-      <button ref={ref}>fui</button>
-      <Child2 ref={ref} />
+      <button onClick={increment}>{count}</button>
   </div>
 }
 
-const Child2 = forwardRef(function (props,ref) {
-    console.log(ref)
-    return <div>
-        123
-    </div>
-})
-
-const DeepChild = React.memo(function ({age}) {
-    return <div>
-        {age.level1.level2}
-    </div>
-})
 
 export default App;

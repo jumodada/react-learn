@@ -39,7 +39,7 @@ function NormalPlayer(props) {
     onProgressChange,
     clickPlaying,
     toggleFullScreen,
-    togglePlayList 
+    togglePlayList
   } = props;
 
   const normalPlayerRef = useRef();
@@ -47,7 +47,7 @@ function NormalPlayer(props) {
   const currentState = useRef("");
   const lyricScrollRef = useRef();
   const lyricLineRefs = useRef([]);
-  
+
   const transform = prefixStyle("transform");
 
   useEffect(() => {
@@ -116,6 +116,7 @@ function NormalPlayer(props) {
     const cdWrapperDom = cdWrapperRef.current;
     cdWrapperDom.style.transition = "all 0.4s";
     const { x, y, scale } = _getPosAndScale();
+    console.log(x,y,scale)
     cdWrapperDom.style[transform] = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
   };
 

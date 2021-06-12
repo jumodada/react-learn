@@ -56,7 +56,8 @@ function Album(props) {
   const musicAnimation = (x, y) => {
     musicNoteRef.current.startAnimation({ x, y });
   };
-  
+
+  console.log(headerEl)
   const renderTopDesc = () => {
     return (
       <TopDesc background={currentAlbum.coverImgUrl}>

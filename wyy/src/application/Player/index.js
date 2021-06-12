@@ -43,7 +43,7 @@ function Player(props) {
     sequencePlayList:immutableSequencePlayList,//顺序列表
     fullScreen
   } = props;
-  
+
   const {
     togglePlayingDispatch,
     togglePlayListDispatch,
@@ -53,7 +53,7 @@ function Player(props) {
     changeModeDispatch,//改变mode
     toggleFullScreenDispatch,
   } = props;
-  
+
   const playList = immutablePlayList.toJS();
   const sequencePlayList = immutableSequencePlayList.toJS();
   const currentSong = immutableCurrentSong.toJS();
@@ -72,6 +72,7 @@ function Player(props) {
     songReady.current = false;
     changeCurrentDispatch(current);//赋值currentSong
     audioRef.current.src = getSongUrl(current.id);
+    console.log(audioRef.current)
     setTimeout(() => {
       audioRef.current.play().then(() => {
         songReady.current = true;
@@ -87,13 +88,13 @@ function Player(props) {
   useEffect(() => {
     playing ? audioRef.current.play() : audioRef.current.pause();
   }, [playing]);
-  
+
   const handleLyric = ({ lineNum, txt }) => {
     if(!currentLyric.current)return;
     currentLineNum.current = lineNum;
     setPlayingLyric(txt);
   };
-  
+
   const getLyric = id => {
     let lyric = "";
     if (currentLyric.current) {
@@ -223,7 +224,7 @@ function Player(props) {
           percent={percent}
           changePlayListDispatch={changePlayListDispatch}
           togglePlayList={togglePlayListDispatch}
-        /> 
+        />
         )
       }
       { isEmptyObject(currentSong) ? null : (
@@ -254,9 +255,9 @@ function Player(props) {
         onTimeUpdate={updateTime}
         onEnded={handleEnd}
         onError={handleError}
-      ></audio>
+      />
       <PlayList></PlayList>
-      <Toast text={modeText} ref={toastRef}></Toast>  
+      <Toast text={modeText} ref={toastRef}></Toast>
     </div>
   )
 }

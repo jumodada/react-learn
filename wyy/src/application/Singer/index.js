@@ -15,15 +15,15 @@ function Singer(props) {
   const initialHeight = useRef(0);
   const [showStatus, setShowStatus] = useState(true);
 
-  const { 
-    artist: immutableArtist, 
-    songs: immutableSongs, 
+  const {
+    artist: immutableArtist,
+    songs: immutableSongs,
     loading,
     songsCount
   } = props;
-  
+
   const { getSingerDataDispatch } = props;
-  
+
   const artist = immutableArtist.toJS();
   const songs = immutableSongs.toJS();
 
@@ -37,7 +37,7 @@ function Singer(props) {
 
   //往上偏移的尺寸，露出圆角
   const OFFSET = 5;
-  
+
   useEffect(() => {
     const id = props.match.params.id;
     getSingerDataDispatch(id);
@@ -49,7 +49,6 @@ function Singer(props) {
     songScroll.current.refresh();
     // eslint-disable-next-line
   }, []);
-
   const handleScroll = useCallback(pos => {
     let height = initialHeight.current;
     const newY = pos.y;
@@ -61,12 +60,12 @@ function Singer(props) {
 
     //指的是滑动距离占图片高度的百分比
     const percent = Math.abs(newY / height);
-
     if (newY > 0) {
       imageDOM.style["transform"] = `scale(${1 + percent})`;
       buttonDOM.style["transform"] = `translate3d(0, ${newY}px, 0)`;
       layerDOM.style.top = `${height - OFFSET + newY}px`;
     } else if (newY >= minScrollY) {
+      console.log(1);
       layerDOM.style.top = `${height - OFFSET - Math.abs(newY)}px`;
       //这时候保证遮罩的层叠优先级比图片高，不至于被图片挡住
       layerDOM.style.zIndex = 1;
@@ -119,7 +118,7 @@ function Singer(props) {
           <i className="iconfont">&#xe62d;</i>
           <span className="text">收藏</span>
         </CollectButton>
-        <BgLayer ref={layer}></BgLayer>
+        <BgLayer ref={layer} />
         <SongListWrapper ref={songScrollWrapper}>
           <Scroll ref={songScroll} onScroll={handleScroll}>
             <SongsList
